@@ -1,0 +1,22 @@
+# =============================================================================
+# IMAGE UPDATER CR: app-1
+# Tells ArgoCD Image Updater (v1.1+) to watch ECR for new semver tags
+# and automatically update the app-1 Application with the latest image.
+# =============================================================================
+---
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: app-1
+  namespace: argocd
+spec:
+  namespace: argocd
+  writeBackConfig:
+    method: argocd
+  applicationRefs:
+    - namePattern: "app-1"
+      images:
+        - alias: app
+          imageName: 585008053249.dkr.ecr.eu-west-1.amazonaws.com/muhirwajd/app-1
+          commonUpdateSettings:
+            updateStrategy: semver
