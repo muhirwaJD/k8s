@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: app-1
-          image: 585008053249.dkr.ecr.eu-west-1.amazonaws.com/muhirwajd/app-1:v0.1.3
+          image: 585008053249.dkr.ecr.eu-west-1.amazonaws.com/muhirwajd
           ports:
             - containerPort: 8080
           livenessProbe:
