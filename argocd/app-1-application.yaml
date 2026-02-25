@@ -15,7 +15,7 @@ metadata:
   namespace: argocd
   annotations:
     # --- Image Updater: Watch ECR for new tags ---
-    argocd-image-updater.argoproj.io/image-list: 585008053249.dkr.ecr.eu-west-1.amazonaws.com/muhirwajd
+    argocd-image-updater.argoproj.io/image-list: app=585008053249.dkr.ecr.eu-west-1.amazonaws.com/muhirwajd/app-1
     argocd-image-updater.argoproj.io/app.update-strategy: semver
     argocd-image-updater.argoproj.io/write-back-method: argocd
   finalizers:
