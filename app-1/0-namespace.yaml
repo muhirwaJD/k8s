@@ -1,0 +1,9 @@
+# =============================================================================
+# APP-1: Kubernetes Deployment Manifests
+# These are the manifests that ArgoCD will watch and sync to the cluster.
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: app-1
