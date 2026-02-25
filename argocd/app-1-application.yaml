@@ -20,18 +20,18 @@ metadata:
     argocd-image-updater.argoproj.io/write-back-method: git
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/muhirwaJD/Kubernetes-Cloud.git
-    targetRevision: main
-    path: aws/gitops/k8s/app-1  # Directory containing the K8s manifests
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: app-1
-  syncPolicy:
-    automated:
-      selfHeal: true   # Fix drift if someone manually changes a resource
-      prune: true      # Delete resources removed from Git
-    syncOptions:
-      - CreateNamespace=true
+  spec:
+    project: default
+    source:
+      repoURL: https://github.com/muhirwaJD/k8s.git
+      targetRevision: main
+      path: aws/gitops/k8s/app-1  # Directory containing the K8s manifests
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: app-1
+    syncPolicy:
+      automated:
+        selfHeal: true   # Fix drift if someone manually changes a resource
+        prune: true      # Delete resources removed from Git
+      syncOptions:
+        - CreateNamespace=true
