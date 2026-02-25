@@ -3,9 +3,7 @@
 # This tells ArgoCD to watch the k8s/app-1/ directory in our Git repo
 # and automatically sync those manifests to the EKS cluster.
 #
-# Image Updater Annotations:
-#   - Watches the ECR repo for new semver tags (v0.1.0, v0.1.1, etc.)
-#   - Automatically updates the image tag in the deployment
+# Image Updater config is managed via CRD: app-1-image-updater.yaml
 # =============================================================================
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -13,11 +11,6 @@ kind: Application
 metadata:
   name: app-1
   namespace: argocd
-  annotations:
-    # --- Image Updater: Watch ECR for new tags ---
-    argocd-image-updater.argoproj.io/image-list: app=585008053249.dkr.ecr.eu-west-1.amazonaws.com/muhirwajd/app-1
-    argocd-image-updater.argoproj.io/app.update-strategy: semver
-    argocd-image-updater.argoproj.io/write-back-method: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
