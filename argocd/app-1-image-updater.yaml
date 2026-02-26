@@ -1,7 +1,7 @@
 # =============================================================================
 # IMAGE UPDATER CR: app-1
 # Tells ArgoCD Image Updater (v1.1+) to watch ECR for new semver tags
-# and automatically update the app-1 Application with the latest image.
+# and commit the updated image tag back to Git.
 # =============================================================================
 ---
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
@@ -12,7 +12,9 @@ metadata:
 spec:
   namespace: argocd
   writeBackConfig:
-    method: argocd
+    method: git
+    gitConfig:
+      branch: main
   applicationRefs:
     - namePattern: "app-1"
       images:
