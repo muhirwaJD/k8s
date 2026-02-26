@@ -18,7 +18,7 @@ spec:
     - http:
         paths:
           - path: /app(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: app-1
