@@ -11,14 +11,21 @@ metadata:
   namespace: app-1
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: external-nginx
   rules:
     - http:
         paths:
-          - path: /app(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /version
+            pathType: Prefix
+            backend:
+              service:
+                name: app-1
+                port:
+                  number: 80
+          
+          - path: /healthz
+            pathType: Prefix
             backend:
               service:
                 name: app-1
