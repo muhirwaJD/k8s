@@ -1,0 +1,11 @@
+# =============================================================================
+# NAMESPACE: 6-example
+# Demonstrates Ingress with AWS ALB — routes traffic by host/path rules.
+# One ALB serves all Ingress rules (cheaper than one NLB per service).
+# Compare with 5-example which uses LoadBalancer Service (NLB per service).
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 6-example

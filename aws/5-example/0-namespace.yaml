@@ -1,0 +1,10 @@
+# =============================================================================
+# NAMESPACE: 5-example
+# Demonstrates LoadBalancer Service — creates an AWS NLB directly.
+# Each LoadBalancer Service creates its own NLB (~$16/month each).
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 5-example

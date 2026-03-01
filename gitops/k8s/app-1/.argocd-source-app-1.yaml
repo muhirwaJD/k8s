@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - 585008053249.dkr.ecr.eu-west-1.amazonaws.com/muhirwajd/app-1:v0.1.21

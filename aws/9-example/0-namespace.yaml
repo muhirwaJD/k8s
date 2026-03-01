@@ -1,0 +1,14 @@
+# =============================================================================
+# NAMESPACE: 9-example
+# Demonstrates HTTPS with cert-manager + NGINX Ingress Controller.
+# Cert-manager auto-provisions TLS certificates from Let's Encrypt.
+#
+# Flow: Internet → NLB → NGINX (terminates TLS) → ClusterIP Service → Pod
+#
+# This example adds TLS on top of 8-example's NGINX Ingress setup.
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 9-example

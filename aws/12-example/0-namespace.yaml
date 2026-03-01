@@ -1,0 +1,14 @@
+# =============================================================================
+# NAMESPACE: 12-example
+# Demonstrates Secrets Store CSI Driver with AWS Secrets Manager.
+# Fetches secrets from AWS and mounts them as files inside pods.
+#
+# Prerequisites:
+#   1. AWS Secrets Manager secret named "MyTestSecret"
+#   2. Secrets Store CSI Driver installed (21-secrets-store-csi-driver.tf)
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 12-example

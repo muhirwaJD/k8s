@@ -1,0 +1,46 @@
+# =============================================================================
+# INGRESS: myapp (NGINX Ingress + TLS via cert-manager)
+# Routes external traffic via NGINX with HTTPS support.
+# Uses the NLB already created by 16-nginx-ingress.tf.
+#
+# Traffic flow:
+#   Internet → NLB → NGINX pod (terminates TLS) → matches host
+#   → matches path "/" → forwards to service "myapp" on port 8080
+#
+# TLS flow:
+#   1. This Ingress is created with the cert-manager annotation
+#   2. Cert-manager sees it → requests cert from Let's Encrypt staging
+#   3. Let's Encrypt verifies domain via HTTP01 challenge on port 80
+#   4. Certificate is stored in Secret "ex9-tls-cert"
+#   5. NGINX loads the certificate and serves HTTPS on port 443
+#   6. Cert-manager auto-renews before expiry
+# =============================================================================
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp
+  namespace: 9-example
+  annotations:
+    # Tell cert-manager to issue a certificate using the staging issuer
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  ingressClassName: external-nginx   # Use NGINX Ingress (not ALB)
+
+  # TLS configuration — cert-manager auto-provisions the certificate
+  tls:
+    - hosts:
+        - ex9.antonputra.com         # Domain to get a certificate for
+      secretName: ex9-tls-cert       # Secret where the cert will be stored
+
+  rules:
+    - host: ex9.antonputra.com       # Only route traffic for this domain
+      http:
+        paths:
+          - path: /                  # Match all paths under this host
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp          # Forward to the ClusterIP service
+                port:
+                  number: 8080

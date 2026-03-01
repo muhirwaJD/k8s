@@ -1,0 +1,10 @@
+# =============================================================================
+# NAMESPACE: 3-example
+# Isolates this example's resources from the rest of the cluster.
+# All resources in this example (deployment, service, HPA) live here.
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 3-example

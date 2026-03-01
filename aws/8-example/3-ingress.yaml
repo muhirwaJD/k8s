@@ -1,0 +1,30 @@
+# =============================================================================
+# INGRESS: myapp (NGINX Ingress Controller)
+# Routes external traffic via the NGINX pod instead of creating an ALB.
+# Uses the NLB already created by 16-nginx-ingress.tf.
+#
+# Traffic flow:
+#   Internet → NLB → NGINX pod → matches host "ex8.antonputra.com"
+#   → matches path "/" → forwards to service "myapp" on port 8080
+#
+# Compare with 6-example/3-ingress.yaml which uses ingressClassName: alb
+# =============================================================================
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp
+  namespace: 8-example
+spec:
+  ingressClassName: external-nginx   # Use NGINX Ingress (not ALB)
+  rules:
+    - host: ex8.antonputra.com       # Only route traffic for this domain
+      http:
+        paths:
+          - path: /                  # Match all paths under this host
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp          # Forward to the ClusterIP service
+                port:
+                  number: 8080

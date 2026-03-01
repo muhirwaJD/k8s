@@ -1,0 +1,19 @@
+# =============================================================================
+# SERVICE: myapp (ClusterIP — internal only)
+# ClusterIP = only accessible inside the cluster.
+# External access comes from the NGINX Ingress (4-ingress.yaml) which
+# terminates TLS and routes traffic to this service.
+# =============================================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: 9-example
+spec:
+  type: ClusterIP                  # Internal only — NGINX Ingress handles external access
+  ports:
+    - port: 8080                   # Port the Service listens on
+      targetPort: http             # Routes to the pod's named port "http"
+  selector:
+    app: myapp

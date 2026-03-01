@@ -1,0 +1,18 @@
+# =============================================================================
+# SERVICE: myapp
+# Provides a stable internal DNS name (myapp.3-example.svc.cluster.local)
+# and load-balances traffic across all pods with label app=myapp.
+# Type: ClusterIP (default) — only accessible inside the cluster.
+# =============================================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: 3-example
+spec:
+  ports:
+    - port: 8080              # Port the Service listens on
+      targetPort: http        # Routes to the named port "http" on the pod (8080)
+  selector:
+    app: myapp                # Sends traffic to pods with this label

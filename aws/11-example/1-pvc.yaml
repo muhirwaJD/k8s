@@ -1,0 +1,22 @@
+# =============================================================================
+# PERSISTENT VOLUME CLAIM: shared EFS storage
+# Requests a 5Gi shared volume from the EFS StorageClass.
+# Unlike 10-example (EBS volumeClaimTemplates — one volume per pod),
+# this single PVC is SHARED by all pods in the deployment.
+#
+# accessModes: ReadWriteMany = multiple pods can mount this at the same time
+# storageClassName: efs      = use the EFS StorageClass (19-efs-csi-driver.tf)
+# =============================================================================
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-data
+  namespace: 11-example
+spec:
+  accessModes:
+    - ReadWriteMany            # Multiple pods can read AND write at the same time
+  storageClassName: efs        # Uses EFS StorageClass (created in 19-efs-csi-driver.tf)
+  resources:
+    requests:
+      storage: 5Gi             # 5 GB of shared EFS storage

@@ -1,0 +1,11 @@
+# =============================================================================
+# NAMESPACE: 8-example
+# Demonstrates NGINX Ingress Controller — routes traffic via NGINX pod
+# instead of AWS ALB (compare with 6-example which uses ALB Ingress).
+# Uses the NLB already created by the NGINX Ingress Controller (16-nginx-ingress.tf).
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 8-example

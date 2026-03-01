@@ -1,0 +1,17 @@
+# =============================================================================
+# SERVICE: myapp (ClusterIP — internal access)
+# Standard ClusterIP service to route traffic to the 3 myapp pods.
+# =============================================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: 11-example
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+  selector:
+    app: myapp

@@ -1,0 +1,21 @@
+# =============================================================================
+# CLUSTER ROLE BINDING: cluster-admin → my-admin group
+# Assigns the built-in "cluster-admin" ClusterRole to the "my-admin" K8s group.
+# No custom ClusterRole needed — "cluster-admin" is built into every K8s cluster
+# and grants full unrestricted access to all resources.
+# Any IAM user/role mapped to "my-admin" (via EKS access entry in
+# 10-add-manager-role.tf) gets full admin access to the cluster.
+# =============================================================================
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: my-admin-binding
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin              # Built-in K8s role — full access to everything
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: Group
+    name: my-admin                 # K8s group mapped from IAM via EKS access entry
+    apiGroup: rbac.authorization.k8s.io

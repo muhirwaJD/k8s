@@ -1,0 +1,11 @@
+---
+configs:
+  params:
+    server.insecure: true
+    # Tell ArgoCD it's being served under /argocd
+    server.basehref: /argocd
+    server.rootpath: /argocd
+
+server:
+  ingress:
+    enabled: false

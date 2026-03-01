@@ -1,0 +1,38 @@
+# =============================================================================
+# CLUSTER ISSUER: Let's Encrypt (Staging)
+# Tells cert-manager HOW to get certificates.
+#
+# Using the STAGING server for learning — it issues fake certificates that
+# browsers won't trust, but proves the entire flow works without hitting
+# Let's Encrypt rate limits.
+#
+# For production, change the server URL to:
+#   https://acme-v2.api.letsencrypt.org/directory
+#
+# HTTP01 challenge: Let's Encrypt sends a request to your domain on port 80
+# to verify you own it. The NGINX Ingress Controller handles this automatically.
+# =============================================================================
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging                       # Referenced by Ingress annotation
+spec:
+  acme:
+    # Let's Encrypt STAGING server (fake certs for testing)
+    # Production URL: https://acme-v2.api.letsencrypt.org/directory
+    server: https://acme-staging-v2.api.letsencrypt.org/directory
+
+    # Email for certificate expiry notifications
+    email: muhirwa232@gmail.com
+
+    # Secret to store the Let's Encrypt account private key
+    privateKeySecretRef:
+      name: letsencrypt-staging-account-key
+
+    solvers:
+      # HTTP01 challenge: proves domain ownership via HTTP request
+      # cert-manager creates a temporary Ingress to respond to the challenge
+      - http01:
+          ingress:
+            ingressClassName: external-nginx       # Use NGINX to handle the challenge

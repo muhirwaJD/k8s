@@ -1,0 +1,34 @@
+# =============================================================================
+# DEPLOYMENT: myapp (Ingress example)
+# Simple deployment — external access is provided by the Ingress (3-ingress.yaml)
+# instead of a LoadBalancer Service.
+# =============================================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  namespace: 6-example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: aputra/myapp-195:v2
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 128Mi
+              cpu: 100m

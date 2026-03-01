@@ -1,0 +1,49 @@
+# =============================================================================
+# DEPLOYMENT: myapp (Shared EFS storage example)
+# 3 replicas all mount the SAME EFS volume — they share files in /data.
+#
+# Compare with 10-example (StatefulSet + EBS):
+#   EBS: each pod replica gets its OWN volume (ReadWriteOnce)
+#   EFS: all pod replicas share ONE volume (ReadWriteMany) ← this example
+#
+# Real-world scenario: 3 web server pods all serve the same uploaded images
+# stored in /data — any pod can read files uploaded by any other pod.
+# =============================================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  namespace: 11-example
+spec:
+  replicas: 3                   # 3 pods all sharing the same EFS volume
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: aputra/myapp-195:v2
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: shared-data
+              mountPath: /data  # EFS volume mounted here — same folder across all 3 pods
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 128Mi
+              cpu: 100m
+      volumes:
+        # Reference the PVC created in 1-pvc.yaml
+        # All 3 pod replicas mount the same PVC (ReadWriteMany)
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: shared-data

@@ -1,0 +1,28 @@
+# =============================================================================
+# SERVICE: myapp (LoadBalancer type)
+# Creates an AWS Network Load Balancer (NLB) directly.
+# Traffic flows: Internet → NLB → directly to pod IPs (ip target type).
+#
+# Annotations tell the AWS Load Balancer Controller (15-aws-lbc.tf) how
+# to configure the NLB in AWS.
+#
+# Compare with 6-example which uses Ingress (shared ALB) instead.
+# =============================================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: 5-example
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external             # Use the new AWS LBC (not in-tree)
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip        # Route directly to pod IPs
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing    # Publicly accessible
+    # service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+spec:
+  type: LoadBalancer              # Triggers NLB creation
+  ports:
+    - port: 8080                  # Port the NLB listens on
+      targetPort: http            # Routes to the pod's named port "http" (8080)
+  selector:
+    app: myapp

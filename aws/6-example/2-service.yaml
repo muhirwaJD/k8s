@@ -1,0 +1,22 @@
+# =============================================================================
+# SERVICE: myapp (ClusterIP — internal only)
+# ClusterIP = only accessible inside the cluster. No external load balancer.
+# External access comes from the Ingress (3-ingress.yaml) which routes
+# traffic from the ALB to this service.
+#
+# Compare with 5-example/2-service.yaml which uses type: LoadBalancer
+# (creates its own NLB).
+# =============================================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+  namespace: 6-example
+spec:
+  type: ClusterIP                  # Internal only — Ingress handles external access
+  ports:
+    - port: 8080                   # Port the Service listens on
+      targetPort: http             # Routes to the pod's named port "http"
+  selector:
+    app: myapp

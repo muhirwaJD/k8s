@@ -1,0 +1,35 @@
+# =============================================================================
+# INGRESS: myapp (AWS ALB)
+# Creates an Application Load Balancer (ALB) that routes external traffic
+# to the ClusterIP service based on host and path rules.
+#
+# Traffic flow:
+#   Internet → ALB (created by AWS LBC) → matches host "ex6.antonputra.com"
+#   → matches path "/" → forwards to service "myapp" on port 8080
+#
+# Annotations reference:
+# https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.7/guide/ingress/annotations/
+# =============================================================================
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp
+  namespace: 6-example
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing      # Public ALB (accessible from internet)
+    alb.ingress.kubernetes.io/target-type: ip               # Route directly to pod IPs (faster)
+    alb.ingress.kubernetes.io/healthcheck-path: /health     # ALB checks this path to verify pod health
+spec:
+  ingressClassName: alb            # Use AWS ALB Ingress (managed by 15-aws-lbc.tf)
+  rules:
+    - host: ex6.antonputra.com     # Only route traffic for this domain
+      http:
+        paths:
+          - path: /                # Match all paths under this host
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp        # Forward to the ClusterIP service
+                port:
+                  number: 8080

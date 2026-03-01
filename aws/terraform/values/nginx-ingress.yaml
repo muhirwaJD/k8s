@@ -1,0 +1,11 @@
+# NGINX Ingress Controller configuration values
+# Sets up an external-facing ingress using an AWS Network Load Balancer (NLB)
+---
+controller:
+  ingressClassResource:
+    name: external-nginx                # Name to reference in Ingress resources (ingressClassName)
+  service:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: external             # Create an external LB (not internal)
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip        # Route directly to pod IPs (faster)
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing    # Publicly accessible from the internet

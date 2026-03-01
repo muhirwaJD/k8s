@@ -1,0 +1,54 @@
+# =============================================================================
+# STATEFULSET: myapp (Persistent Storage with EBS)
+# Unlike a Deployment, a StatefulSet:
+#   - Gives each pod a stable, predictable name: myapp-0, myapp-1, myapp-2
+#   - Gives each pod its OWN dedicated EBS volume (not shared)
+#   - Starts and stops pods in ORDER (0 first, then 1, then 2)
+#   - If pod myapp-0 restarts, it gets the SAME EBS volume back
+#
+# Real-world use: databases (each replica needs its own data files),
+#                 message queues, Elasticsearch nodes, etc.
+#
+# volumeClaimTemplates: automatically creates a PVC for each pod replica
+#   → Each pod gets: 5Gi EBS volume in AWS
+#   → Pod myapp-0 → PVC data-myapp-0 → EBS volume
+#
+# Requires: EBS CSI Driver (18-ebs-csi-driver.tf) to provision EBS volumes
+# =============================================================================
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: myapp
+  namespace: 10-example
+spec:
+  serviceName: nginx              # Headless service name for stable DNS (myapp-0.nginx.10-example.svc)
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: aputra/myapp-195:v2
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: data
+              mountPath: /data    # EBS volume will be mounted here inside the container
+
+  # volumeClaimTemplates: creates a separate PVC (and EBS volume) per pod replica
+  volumeClaimTemplates:
+    - metadata:
+        name: data                # Must match volumeMounts[].name above
+      spec:
+        storageClassName: gp2     # EBS CSI Driver provisions a GP2 SSD volume
+        accessModes: [ReadWriteOnce]  # Only one pod can read/write at a time (EBS limitation)
+        resources:
+          requests:
+            storage: 5Gi          # 5 GB EBS volume per pod replica

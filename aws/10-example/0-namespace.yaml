@@ -1,0 +1,13 @@
+# =============================================================================
+# NAMESPACE: 10-example
+# Demonstrates StatefulSet with persistent storage using EBS CSI Driver.
+# Unlike Deployments, StatefulSets give each pod a stable name and its own
+# dedicated EBS volume that persists across pod restarts.
+#
+# Requires: EBS CSI Driver (18-ebs-csi-driver.tf) to be installed first.
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 10-example

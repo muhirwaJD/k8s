@@ -1,0 +1,14 @@
+# =============================================================================
+# CLUSTER ROLE: viewer (read-only)
+# Grants read-only access to common resources across the entire cluster.
+# Used by: ClusterRoleBinding in 1-viewer-cluster-role-binding.yaml
+# =============================================================================
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: viewer
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps", "deployments"]
+    verbs: ["get", "list", "watch"]  # Read-only: no create/update/delete

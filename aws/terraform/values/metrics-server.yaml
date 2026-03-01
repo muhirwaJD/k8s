@@ -1,0 +1,9 @@
+# Metrics Server configuration values
+# These flags control how the metrics server collects data from kubelets
+---
+defaultArgs:
+  - --cert-dir=/tmp                                                    # TLS cert storage location
+  - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname   # How to reach nodes (try internal IP first)
+  - --kubelet-use-node-status-port                                     # Use the node's status port for metrics
+  - --metric-resolution=15s                                            # Collect metrics every 15 seconds
+  - --secure-port=10250                                                # Port the metrics server listens on

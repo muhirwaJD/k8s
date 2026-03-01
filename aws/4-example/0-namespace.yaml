@@ -1,0 +1,10 @@
+# =============================================================================
+# NAMESPACE: 4-example
+# Tests Cluster Autoscaler by requesting more resources than 1 node can handle.
+# 5 replicas × 500m CPU = 2.5 vCPU → forces autoscaler to add a 2nd node.
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 4-example

@@ -1,0 +1,19 @@
+# =============================================================================
+# CLUSTER ROLE BINDING: viewer → my-viewer group
+# Assigns the "viewer" ClusterRole to the "my-viewer" Kubernetes group.
+# Any IAM user/role mapped to "my-viewer" (via EKS access entry in
+# 9-add-developer-user.tf) gets read-only access to the cluster.
+# =============================================================================
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: my-viewer-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: viewer                     # References the custom ClusterRole (0-viewer-cluster-role.yaml)
+subjects:
+  - kind: Group
+    name: my-viewer                # K8s group mapped from IAM via EKS access entry
+    apiGroup: rbac.authorization.k8s.io

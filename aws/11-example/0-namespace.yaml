@@ -1,0 +1,18 @@
+# =============================================================================
+# NAMESPACE: 11-example
+# Demonstrates StatefulSet with SHARED persistent storage using EFS CSI Driver.
+# Unlike 10-example (EBS — one pod owns the volume), EFS allows ALL pod
+# replicas to read and write to the SAME shared file system simultaneously.
+#
+# Use case: shared files between multiple pod replicas
+#   - User uploaded images served by 3 pods reading the same EFS folder
+#   - Shared configuration files
+#   - ML model files loaded by multiple inference pods
+#
+# Requires: EFS CSI Driver (19-efs-csi-driver.tf) to be installed first.
+# =============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: 11-example
