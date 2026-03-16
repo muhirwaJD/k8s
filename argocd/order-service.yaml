@@ -10,10 +10,10 @@ spec:
   source:
     repoURL: https://github.com/muhirwaJD/k8s.git
     targetRevision: main
-    path: helm/microservice-chart
+    path: helm
     helm:
       valueFiles:
-        - ../../environments/dev/values-order-service.yaml
+        - ../environments/dev/values-order-service.yaml
 
   # Where to deploy in the cluster
   destination:

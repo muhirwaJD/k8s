@@ -9,10 +9,10 @@ spec:
   source:
     repoURL: https://github.com/muhirwaJD/k8s.git
     targetRevision: main
-    path: helm/microservice-chart
+    path: helm
     helm:
       valueFiles:
-        - ../../environments/dev/values-api-gateway.yaml
+        - ../environments/dev/values-api-gateway.yaml
 
   destination:
     server: https://kubernetes.default.svc
