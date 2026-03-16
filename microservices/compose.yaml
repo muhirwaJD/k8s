@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    networks:
+      - internal
+      - public
+    ports:
+      - "5000:5000"
+    environment:
+      - USER_SERVICE_URL
+      - ORDER_SERVICE_URL
+    depends_on:
+      - user-service
+      - order-service
+  
+  order-service:
+    build: ./order-service
+    networks:
+      - internal
+
+  user-service:
+    build: ./user-service
+    networks:
+      - internal    # receives requests from api-gateway
+      - database    # can reach postgres
+    environment:
+      - ORDER_SERVICE_URL
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
+    depends_on:
+      - order-service
+      - postgres
+  
+  # PostgreSQL database — persisted via a named volume
+  postgres:
+    image: postgres:16-alpine
+    networks:
+      - database
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data   # ← Volume persists data here
+
+# Named volumes managed by Docker
+volumes:
+  postgres_data:
+
+networks:
+  internal:
+  public:
+  database:

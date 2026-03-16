@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: order-service
+  namespace: argocd
+spec:
+  project: default
+
+  # Where to find the Helm chart + values in Git
+  source:
+    repoURL: https://github.com/muhirwaJD/k8s.git
+    targetRevision: main
+    path: helm/microservice-chart
+    helm:
+      valueFiles:
+        - ../../environments/dev/values-order-service.yaml
+
+  # Where to deploy in the cluster
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  # Auto-sync: ArgoCD applies changes from Git automatically
+  syncPolicy:
+    automated:
+      selfHeal: true # Reverts manual changes made outside Git
+      prune: true # Deletes resources removed from Git
+    syncOptions:
+      - CreateNamespace=true

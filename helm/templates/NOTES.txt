@@ -1,0 +1,17 @@
+✅ {{ .Values.name }} deployed successfully!
+
+Service: {{ include "microservice.fullname" . }}
+Image:   {{ .Values.image.repository }}:{{ .Values.image.tag }}
+Port:    {{ .Values.service.port }}
+Type:    {{ .Values.service.type }}
+
+{{- if eq .Values.service.type "NodePort" }}
+
+Access it from your local machine:
+  export NODE_PORT=$(kubectl get svc {{ include "microservice.fullname" . }} -o jsonpath="{.spec.ports[0].nodePort}")
+  echo "http://localhost:$NODE_PORT"
+{{- else }}
+
+Access it within the cluster via port-forward:
+  kubectl port-forward svc/{{ include "microservice.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+{{- end }}

@@ -1,0 +1,29 @@
+name: "user-service"
+
+replicaCount: 1
+
+image:
+  repository: muhirwajd/user-service
+  tag: "v1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5001
+  targetPort: 5001
+
+env:
+  ORDER_SERVICE_URL: "http://order-service:5002"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "usersdb"
+  DB_USER: "appuser"
+  DB_PASSWORD: "apppassword123"
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi

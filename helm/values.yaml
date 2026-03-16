@@ -1,0 +1,31 @@
+# Default values for microservice-chart.
+# Each service overrides these via its own values file in environments/dev/.
+
+# Service name — MUST be overridden per service
+name: microservice
+
+replicaCount: 1
+
+image:
+  repository: "" # e.g. muhirwajd/api-gateway
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP # ClusterIP for internal; NodePort for local access
+  port: 80 # External port exposed by the Service
+  targetPort: 80 # Port the container listens on
+
+# Environment variables injected into the container at runtime
+# e.g:
+#   env:
+#     ORDER_SERVICE_URL: "http://order-service:5002"
+env: {}
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi

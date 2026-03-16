@@ -1,0 +1,25 @@
+name: "api-gateway"
+
+replicaCount: 1
+
+image:
+  repository: muhirwajd/api-gateway
+  tag: "v1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 5000
+  targetPort: 5000
+
+env:
+  USER_SERVICE_URL: "http://user-service:5001"
+  ORDER_SERVICE_URL: "http://order-service:5002"
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi

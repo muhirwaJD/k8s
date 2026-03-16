@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: api-gateway
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/muhirwaJD/k8s.git
+    targetRevision: main
+    path: helm/microservice-chart
+    helm:
+      valueFiles:
+        - ../../environments/dev/values-api-gateway.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
