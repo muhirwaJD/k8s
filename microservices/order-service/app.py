@@ -8,7 +8,7 @@ ORDERS = [
     {"id": 2, "user_id": 1, "product": "Mouse", "quantity": 2, "price": 29.99, "status": "delivered"},
     {"id": 3, "user_id": 2, "product": "Keyboard", "quantity": 1, "price": 79.99, "status": "processing"},
     {"id": 4, "user_id": 3, "product": "Monitor", "quantity": 1, "price": 499.99, "status": "shipped"},
-    {"id": 5, "user_id": 2, "product": "Headphonesdsd", "quantity": 1, "price": 199.99, "status": "delivered"},
+    {"id": 5, "user_id": 2, "product": "Headphones", "quantity": 1, "price": 199.99, "status": "delivered"},
 ]
 
 
